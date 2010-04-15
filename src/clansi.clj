@@ -1,5 +1,11 @@
 (ns clansi)
 
+;; Maybe good to keep as a reference: http://www.termsys.demon.co.uk/vtansi.htm
+;; The color ansi-codes can be combined in one command if needed, separating the
+;; numbers by semicolons. --Joop
+
+;; Maybe we should build some terminal capabilities wrapper...
+
 (def ANSI-CODES
   {:reset              "[0m"
    :bright             "[1m"
@@ -30,7 +36,12 @@
    :bg-yellow  "[43m"
    :bg-magenta "[45m"
    :bg-cyan    "[46m"
-   })
+})
+
+(defn clear-screen
+ "Clears the screen. Concatenate at the beginning of the string you want to display"
+ []
+ (str \u001b "[2J" \u001b "[H"))
 
 (defn ansi
   "Output an ANSI escape code using a style key.
