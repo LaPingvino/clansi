@@ -109,10 +109,16 @@
     (println (style "Macro" (:macro @doc-style*))))
   (println "  " (style (:doc (meta v)) (:doc @doc-style*))))
 
-(defmacro color-doc 
-  "A stylized version of clojure.core/doc."
-  [v]
-  `(binding [print-doc print-doc-color
-             print-special-doc print-special-doc-color
-             print-namespace-doc print-namespace-doc-color]
-     (doc ~v)))
+(defmacro color-doc
+  "Prints documentation for a var or special form given its name and has style"
+  [name]
+  (cond
+   (special-form-anchor `~name)
+   `(print-special-doc-color '~name "Special Form" (special-form-anchor '~name))
+   (syntax-symbol-anchor `~name)
+   `(print-special-doc-color '~name "Syntax Symbol" (syntax-symbol-anchor '~name))
+   :else
+    (let [nspace (find-ns name)]
+      (if nspace
+        `(print-namespace-doc-color ~nspace)
+        `(print-doc-color (var ~name))))))
