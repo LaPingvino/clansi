@@ -5,6 +5,7 @@
 ;; numbers by semicolons. --Joop
 
 ;; Maybe we should build some terminal capabilities wrapper...
+;; Try in emacs and you'll see why :)
 
 (def ANSI-CODES
   {:reset              "[0m"
@@ -42,6 +43,11 @@
  "Clears the screen. Concatenate at the beginning of the string you want to display"
  []
  (str \u001b "[2J" \u001b "[H"))
+
+(defn location
+  "Put the cursor on row r, column c"
+  [r c]
+  (str \u001b "[" r ";" c "H"))
 
 (defn ansi
   "Output an ANSI escape code using a style key.
